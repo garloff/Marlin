@@ -20,3 +20,8 @@ tested there. While I would hope all 3 printers to basically work, experience te
 code never works as is. So I would hope that the code is very close to working for Buko v2.1 (non-Duo)
 and at least reasonably close for the Bukito.
 
+# Enabled features
+
+* SD support
+* EEPROM support
+
