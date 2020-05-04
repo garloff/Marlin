@@ -525,14 +525,15 @@ int Temperature::getHeaterPower(const int heater) {
 #if HAS_AUTO_FAN
 
   void Temperature::check_extruder_auto_fans() {
-    static const pin_t fanPin[] PROGMEM = { E0_AUTO_FAN_PIN, E1_AUTO_FAN_PIN, E2_AUTO_FAN_PIN, E3_AUTO_FAN_PIN, E4_AUTO_FAN_PIN, CHAMBER_AUTO_FAN_PIN };
+    static const pin_t fanPin[] PROGMEM = { E0_AUTO_FAN_PIN, E1_AUTO_FAN_PIN, E2_AUTO_FAN_PIN, E3_AUTO_FAN_PIN, E4_AUTO_FAN_PIN, CHAMBER_AUTO_FAN_PIN, BED_AUTO_FAN_PIN };
     static const uint8_t fanBit[] PROGMEM = {
                     0,
       AUTO_1_IS_0 ? 0 :               1,
       AUTO_2_IS_0 ? 0 : AUTO_2_IS_1 ? 1 :               2,
       AUTO_3_IS_0 ? 0 : AUTO_3_IS_1 ? 1 : AUTO_3_IS_2 ? 2 :               3,
       AUTO_4_IS_0 ? 0 : AUTO_4_IS_1 ? 1 : AUTO_4_IS_2 ? 2 : AUTO_4_IS_3 ? 3 : 4,
-      AUTO_CHAMBER_IS_0 ? 0 : AUTO_CHAMBER_IS_1 ? 1 : AUTO_CHAMBER_IS_2 ? 2 : AUTO_CHAMBER_IS_3 ? 3 : AUTO_CHAMBER_IS_4 ? 4 : 5
+      AUTO_CHAMBER_IS_0 ? 0 : AUTO_CHAMBER_IS_1 ? 1 : AUTO_CHAMBER_IS_2 ? 2 : AUTO_CHAMBER_IS_3 ? 3 : AUTO_CHAMBER_IS_4 ? 4 : 5,
+      AUTO_BED_IS_0 ? 0 : AUTO_BED_IS_1 ? 1 : AUTO_BED_IS_2 ? 2 : AUTO_BED_IS_3 ? 3 : AUTO_BED_IS_4 ? 4 : 5, AUTO_BED_IS_CH ? 5 : 6
     };
     uint8_t fanState = 0;
 
@@ -543,6 +544,11 @@ int Temperature::getHeaterPower(const int heater) {
     #if HAS_TEMP_CHAMBER
       if (current_temperature_chamber > EXTRUDER_AUTO_FAN_TEMPERATURE)
         SBI(fanState, pgm_read_byte(&fanBit[5]));
+    #endif
+
+    #ifdef BED_AUTO_FAN_TEMPERATURE
+      if (current_temperature_bed > BED_AUTO_FAN_TEMPERATURE)
+        SBI(fanState, pgm_read_byte(&fanBit[6]));
     #endif
 
     uint8_t fanDone = 0;
@@ -1243,6 +1249,17 @@ void Temperature::init() {
       #endif
     #else
       SET_OUTPUT(CHAMBER_AUTO_FAN_PIN);
+    #endif
+  #endif
+
+  #if HAS_AUTO_BED_FAN && !AUTO_BED_IS_0 && !AUTO_BED_IS_1 && !AUTO_BED_IS_2 && !AUTO_BED_IS_3 && ! AUTO_BED_IS_4 && ! AUTO_BED_IS_5
+    #if BED_AUTO_FAN_PIN == FAN1_PIN
+      SET_OUTPUT(BED_AUTO_FAN_PIN);
+      #if ENABLED(FAST_PWM_FAN)
+        setPwmFrequency(BED_AUTO_FAN_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+      #endif
+    #else
+      SET_OUTPUT(BED_AUTO_FAN_PIN);
     #endif
   #endif
 
