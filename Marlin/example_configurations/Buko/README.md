@@ -26,3 +26,4 @@ and at least reasonably close for the Bukito.
 * EEPROM support
 * S-Curve smoothing, Adaptive smoothing (multi-axis moves), diagonal homing (XY)
 * Extruder fans (pin17) run when extruders or bed are warm
+* Measured PID values for Bukov2Duo hotends (spitfire) and bed
