@@ -624,6 +624,8 @@
 #endif
 
 #ifdef Y_STOP_PIN
+  #undef Y_MIN_PIN
+  #undef Y_MAX_PIN
   #if Y_HOME_DIR < 0
     #define Y_MIN_PIN Y_STOP_PIN
     #define Y_MAX_PIN -1
