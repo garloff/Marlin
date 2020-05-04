@@ -27,3 +27,5 @@ and at least reasonably close for the Bukito.
 * S-Curve smoothing, Adaptive smoothing (multi-axis moves), diagonal homing (XY)
 * Extruder fans (pin17) run when extruders or bed are warm
 * Measured PID values for Bukov2Duo hotends (spitfire) and bed
+* FWRETRACT (G10/G11), use M209 S0 to not do it without being requested
+
