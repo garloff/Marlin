@@ -24,4 +24,5 @@ and at least reasonably close for the Bukito.
 
 * SD support
 * EEPROM support
+* S-Curve smoothing, Adaptive smoothing (multi-axis moves), diagonal homing (XY)
 
