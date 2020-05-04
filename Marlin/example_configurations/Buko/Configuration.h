@@ -66,6 +66,8 @@
 //#define FAST_SCREWS           //TR8*8 (experimental)
 //#define VIKI                // only successfully tested with Arduino 1.0.4
 //#define DIRECT_DRIVE_EXTRUDER
+//#define SERIAL_COMPATIBILITY // Needed for some linux distros. Switches baudrate to 115200 (instead of 250000)
+				// to maximise compatibility at the cost of some serial speed.
 
 
 // The following define selects which electronics board you have.
@@ -180,7 +182,11 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 250000
+#ifndef SERIAL_COMPATIBILITY
+  #define BAUDRATE 250000
+#else
+  #define BAUDRATE 115200
+#endif
 
 // Enable the Bluetooth serial interface on AT90USB devices
 //#define BLUETOOTH
