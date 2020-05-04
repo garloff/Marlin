@@ -1711,6 +1711,14 @@
                               // Default behaviour is limited to Z axis only.
 #endif
 
+/** 
+ *  G60/G61 support
+ *
+ *  Set the number of position save slots.
+ *  Requires NUM_AXIS (typically 4 or 5) floats (4 bytes each) memory per slot.
+ */
+//#define SAVED_POSITIONS 16
+
 // Enable Marlin dev mode which adds some special commands
 //#define MARLIN_DEV_MODE
 

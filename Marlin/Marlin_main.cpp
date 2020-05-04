@@ -70,6 +70,8 @@
  * G33  - Delta Auto-Calibration (Requires DELTA_AUTO_CALIBRATION)
  * G38  - Probe in any direction using the Z_MIN_PROBE (Requires G38_PROBE_TARGET)
  * G42  - Coordinated move to a mesh point (Requires MESH_BED_LEVELING, AUTO_BED_LEVELING_BLINEAR, or AUTO_BED_LEVELING_UBL)
+ * G60  - Save position (Requires SAVED_POSITIONS)
+ * G61  - Restore position (ditto)
  * G90  - Use Absolute Coordinates
  * G91  - Use Relative Coordinates
  * G92  - Set current position to coordinates given
@@ -6641,6 +6643,72 @@ void home_all_axes() { gcode_G28(true); }
 
 #endif // HAS_MESH
 
+#ifdef SAVED_POSITIONS
+/** G60, G61: Save and restore position
+ * Common parameters:
+ * S => slot (0-based up to SAVED_POSITIONS-1)
+ * G61 parameters:
+ * X,Y,Z => which axis (several possible, error if none)
+ * F => Feed rate for restore move
+ */
+
+float stored_pos[SAVED_POSITIONS][NUM_AXIS];
+inline void gcode_G60()
+{
+   const bool hasS = parser.seenval('S');
+   const uint8_t posnum = hasS ? parser.value_int() : 0;
+   if (posnum >= SAVED_POSITIONS) {
+      SERIAL_ERROR_START();
+      SERIAL_ERRORLNPGM("Invalid store slot");
+      return;
+   }
+   memcpy(stored_pos[posnum], current_position, sizeof(*stored_pos));
+}
+
+inline void gcode_G61()
+{
+   bool change = false;
+   const bool hasS = parser.seenval('S');
+   const uint8_t posnum = hasS ? parser.value_int() : 0;
+   if (posnum >= SAVED_POSITIONS) {
+      SERIAL_ERROR_START();
+      SERIAL_ERRORLNPGM("Invalid restore slot");
+      return;
+   }
+   const float old_feedrate_mm_s = feedrate_mm_s;
+   memcpy(destination, current_position, sizeof(destination));
+   //SERIAL_ECHO("G61:"); SERIAL_ECHO(cmdbuffer[bufindr]);
+   if (parser.seenval('F')) {
+      const float next_feedrate = parser.value_float();
+      if (next_feedrate > 0.0)
+         feedrate_mm_s = MMM_TO_MMS(next_feedrate);
+   }
+   if (parser.seenval(axis_codes[X_AXIS])) {
+      change = true;
+      destination[X_AXIS] = stored_pos[posnum][X_AXIS];
+      //SERIAL_ECHO(" X: "); SERIAL_ECHO(destination[X_AXIS]);
+   }
+   if (parser.seenval(axis_codes[Y_AXIS])) {
+      change = true;
+      destination[Y_AXIS] = stored_pos[posnum][Y_AXIS];
+      //SERIAL_ECHO(" Y: "); SERIAL_ECHO(destination[Y_AXIS]);
+   }
+   if (parser.seenval(axis_codes[Z_AXIS])) {
+      change = true;
+      destination[Z_AXIS] = stored_pos[posnum][Z_AXIS];
+      //SERIAL_ECHO(" Z: "); SERIAL_ECHO(destination[Z_AXIS]);
+   }
+   if (!change) {
+      SERIAL_ERROR_START();
+      SERIAL_ERRORLNPGM("Need to specify axis XYZ to restore");
+      feedrate_mm_s = old_feedrate_mm_s;
+      return;
+   }
+   prepare_move_to_destination();
+   feedrate_mm_s = old_feedrate_mm_s;
+}
+#endif
+
 /**
  * G92: Set current position to given X Y Z E
  */
@@ -12907,6 +12975,11 @@ void process_parsed_command() {
 
       #if HAS_MESH
         case 42: gcode_G42(); break;                              // G42: Move to mesh point
+      #endif
+
+      #ifdef SAVED_POSITIONS
+        case 60: gcode_G60(); break;				  // G60: Save position
+        case 61: gcode_G61(); break;				  // G61: Restore position
       #endif
 
       case 90: relative_mode = false; break;                      // G90: Absolute coordinates
