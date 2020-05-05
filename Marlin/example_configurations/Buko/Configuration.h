@@ -479,6 +479,7 @@
     #define  DEFAULT_Kp 87.89
     #define  DEFAULT_Ki 3.88
     #define  DEFAULT_Kd 664.28
+#endif	// SPITFIRE
 #endif // PIDTEMP
 
 //===========================================================================
