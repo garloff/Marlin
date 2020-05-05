@@ -855,6 +855,23 @@
 //#define HOTEND_OFFSET_Z {0.0,  -0.0}  // (in mm) for each extruder, offset of the hotend on the Z axis
 #endif
 
+/**
+ * Default Jerk (mm/s)
+ * Override with M205 X Y Z E
+ *
+ * "Jerk" specifies the minimum speed change that requires acceleration.
+ * When changing speed and direction, if the difference is less than the
+ * value set here, it may happen instantaneously.
+ */
+#ifdef DUO
+ #define DEFAULT_XJERK                 20.0
+#else
+ #define DEFAULT_XJERK                 21.0
+#endif
+#define DEFAULT_YJERK                 20.0
+#define DEFAULT_ZJERK                  0.4
+#define DEFAULT_EJERK                  5.0
+
 
 #endif
 
