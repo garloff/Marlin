@@ -33,3 +33,4 @@ and at least reasonably close for the Bukito.
 * Emergency parser (software emergency abort)
 * Bezier curves (G5), well resolved Arcs (G2/G3, incl. full circles)
 * More verbose M114 and SD status reporting
+* Large serial buffers and advanced OK for a slight increase in serial performance
