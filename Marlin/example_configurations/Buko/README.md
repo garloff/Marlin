@@ -29,3 +29,5 @@ and at least reasonably close for the Bukito.
 * Measured PID values for Bukov2Duo hotends (spitfire) and bed
 * FWRETRACT (G10/G11), use M209 S0 to not do it without being requested
 * Position storing (G60/G61) backported from Marlin-2.0.x
+* Manual Probing with G29
+
