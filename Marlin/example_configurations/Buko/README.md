@@ -31,3 +31,4 @@ and at least reasonably close for the Bukito.
 * Position storing (G60/G61) backported from Marlin-2.0.x
 * Manual Probing with G29
 * Emergency parser (software emergency abort)
+* Bezier curves (G5), well resolved Arcs (G2/G3, incl. full circles)
