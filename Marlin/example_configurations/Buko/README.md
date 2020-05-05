@@ -22,7 +22,7 @@ and at least reasonably close for the Bukito.
 
 # Enabled features
 
-* SD support
+* SD support (incl. long file names)
 * EEPROM support
 * S-Curve smoothing, Adaptive smoothing (multi-axis moves), diagonal homing (XY)
 * Extruder fans (pin17) run when extruders or bed are warm
@@ -32,3 +32,4 @@ and at least reasonably close for the Bukito.
 * Manual Probing with G29
 * Emergency parser (software emergency abort)
 * Bezier curves (G5), well resolved Arcs (G2/G3, incl. full circles)
+* More verbose M114 and SD status reporting
