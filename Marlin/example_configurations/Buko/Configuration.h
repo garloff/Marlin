@@ -1310,11 +1310,11 @@
  */
 #if ENABLED(AUTO_BED_LEVELING_3POINT) || ENABLED(AUTO_BED_LEVELING_UBL)
   //#define PROBE_PT_1_X 15
-  //#define PROBE_PT_1_Y 180
-  //#define PROBE_PT_2_X 15
-  //#define PROBE_PT_2_Y 20
-  //#define PROBE_PT_3_X 170
-  //#define PROBE_PT_3_Y 20
+  //#define PROBE_PT_1_Y 100
+  //#define PROBE_PT_2_X 190
+  //#define PROBE_PT_2_Y 15
+  //#define PROBE_PT_3_X 190
+  //#define PROBE_PT_3_Y 190
 #endif
 
 /**
