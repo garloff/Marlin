@@ -471,9 +471,9 @@
     //#define  DEFAULT_Ki 0.37
     //#define  DEFAULT_Kd 45.91
     // Measured KG 2020-04-22:
-    #define  DEFAULT_Kp 24.5
-    #define  DEFAULT_Ki 2.1
-    #define  DEFAULT_Kd 71.0
+    #define  DEFAULT_Kp 26
+    #define  DEFAULT_Ki 2.5
+    #define  DEFAULT_Kd 72
 #else
 // Bukoschnozzle
     #define  DEFAULT_Kp 87.89
@@ -516,9 +516,9 @@
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
   // Measured BukoV2Duo, KG 2020-04-20
-  #define DEFAULT_bedKp 420.0
-  #define DEFAULT_bedKi 65.0
-  #define DEFAULT_bedKd 670.0
+  #define DEFAULT_bedKp 460.0
+  #define DEFAULT_bedKi 75.0
+  #define DEFAULT_bedKd 680.0
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
