@@ -44,6 +44,10 @@
 #include "utility.h"
 #include "serial.h"
 
+#ifndef POS_BEYOND_EDGE
+# define POS_BEYOND_EDGE 0.001f
+#endif
+
 void idle(
   #if ENABLED(ADVANCED_PAUSE_FEATURE)
     bool no_stepper_sleep = false  // pass true to keep steppers from disabling on timeout
@@ -619,8 +623,8 @@ void do_blocking_move_to_xy(const float &rx, const float &ry, const float &fr_mm
    // Return true if the given position is within the machine bounds.
   inline bool position_is_reachable(const float &rx, const float &ry) {
     // Add 0.001 margin to deal with float imprecision
-    return WITHIN(rx, X_MIN_POS - 0.001f, X_MAX_POS + 0.001f)
-        && WITHIN(ry, Y_MIN_POS - 0.001f, Y_MAX_POS + 0.001f);
+    return WITHIN(rx, X_MIN_POS - POS_BEYOND_EDGE, X_MAX_POS + POS_BEYOND_EDGE)
+        && WITHIN(ry, Y_MIN_POS - POS_BEYOND_EDGE, Y_MAX_POS + POS_BEYOND_EDGE);
   }
 
   #if HAS_BED_PROBE

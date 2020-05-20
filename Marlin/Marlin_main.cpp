@@ -483,8 +483,8 @@ bool axis_relative_modes[XYZE] = AXIS_RELATIVE_MODES;
 #endif
 
 // Software Endstops are based on the configured limits.
-float soft_endstop_min[XYZ] = { X_MIN_BED, Y_MIN_BED, Z_MIN_POS },
-      soft_endstop_max[XYZ] = { X_MAX_BED, Y_MAX_BED, Z_MAX_POS };
+float soft_endstop_min[XYZ] = { X_MIN_BED-POS_BEYOND_EDGE, Y_MIN_BED-POS_BEYOND_EDGE, Z_MIN_POS-POS_BEYOND_EDGE },
+      soft_endstop_max[XYZ] = { X_MAX_BED+POS_BEYOND_EDGE, Y_MAX_BED+POS_BEYOND_EDGE, Z_MAX_POS+POS_BEYOND_EDGE };
 #if HAS_SOFTWARE_ENDSTOPS
   bool soft_endstops_enabled = true;
   #if IS_KINEMATIC
@@ -741,8 +741,13 @@ FORCE_INLINE signed char pgm_read_any(const signed char *p) { return pgm_read_by
   static inline type array(const AxisEnum axis) { return pgm_read_any(&array##_P[axis]); } \
   typedef void __void_##CONFIG##__
 
-XYZ_CONSTS_FROM_CONFIG(float, base_min_pos,   MIN_POS);
-XYZ_CONSTS_FROM_CONFIG(float, base_max_pos,   MAX_POS);
+#define XYZ_CONSTS_FROM_CONFIG_ADJUST(type, array, CONFIG, adjust) \
+  static const PROGMEM type array##_P[XYZ] = { X_##CONFIG adjust, Y_##CONFIG adjust, Z_##CONFIG adjust}; \
+  static inline type array(const AxisEnum axis) { return pgm_read_any(&array##_P[axis]); } \
+  typedef void __void_##CONFIG##__
+
+XYZ_CONSTS_FROM_CONFIG_ADJUST(float, base_min_pos,   MIN_POS, -POS_BEYOND_EDGE);
+XYZ_CONSTS_FROM_CONFIG_ADJUST(float, base_max_pos,   MAX_POS, +POS_BEYOND_EDGE);
 XYZ_CONSTS_FROM_CONFIG(float, base_home_pos,  HOME_POS);
 XYZ_CONSTS_FROM_CONFIG(float, max_length,     MAX_LENGTH);
 XYZ_CONSTS_FROM_CONFIG(float, home_bump_mm,   HOME_BUMP_MM);

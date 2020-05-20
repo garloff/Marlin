@@ -1136,6 +1136,14 @@
 #endif
 
 /**
+ *  Optional: Allow small distance beyond bed, e.g. small neg. z values to compensate bed leveling things
+ *  Avoid large values (larger than 1mm) to avoid damaging your equipment.
+ *  In case of doubt, chose 0 or possibly a value of up to 0.5f.
+ */
+
+#define POS_BEYOND_EDGE 0.5f
+
+/**
  * Software Endstops
  *
  * - Prevent moves outside the set machine bounds.
