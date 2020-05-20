@@ -2080,8 +2080,15 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
     const float cs = ABS((current_speed[i] = delta_mm[i] * inverse_secs));
     #if ENABLED(DISTINCT_E_FACTORS)
       if (i == E_AXIS) i += extruder;
+      current_speed[i] = current_speed[i-extruder];
     #endif
-    if (cs > max_feedrate_mm_s[i]) NOMORE(speed_factor, max_feedrate_mm_s[i] / cs);
+    #if defined(DOWNSCALE_EXTRUSION_FACTOR)
+      const float max_feed = (i == E_AXIS && current_speed[i] > 0)? 
+	      max_feedrate_mm_s[i]*DOWNSCALE_EXTRUSION_FACTOR: max_feedrate_mm_s[i];
+    #else
+      const float max_feed = max_feedrate_mm_s[i];
+    #endif
+    if (cs > max_feed) NOMORE(speed_factor, max_feed / cs);
   }
 
   // Max segment time in µs.

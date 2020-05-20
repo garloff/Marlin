@@ -822,13 +822,12 @@
 #endif
 
 #ifndef DIRECT_DRIVE_EXTRUDER
-  //#define E_MAX_F 30
-  #define E_MAX_F 36
+  #define E_MAX_F 30
 #else
   #define E_MAX_F 180
 #endif
 
-// BukoDuoV2: { 320,320,4.2,36 } mm/s (-> {19200,19200,252,2160} mm/min)
+// BukoDuoV2: { 320,320,4.2,30 } mm/s (-> {19200,19200,252,1800} mm/min)
 #define DEFAULT_MAX_FEEDRATE          {XY_MAX_F, XY_MAX_F, Z_MAX_F, E_MAX_F}    // (mm/sec)
 
 /** Max acceleration (M201) */
@@ -874,6 +873,12 @@
 
 
 #endif
+
+/**
+ * Optional: Downscale maximum extrusion speed (vs. maximum retraction speed)
+ * by defining a factor DOWNSCALE_EXTRUSION_FACTOR
+ */
+#define DOWNSCALE_EXTRUSION_FACTOR 0.5
 
 
 /**
